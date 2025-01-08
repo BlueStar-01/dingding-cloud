@@ -1,0 +1,16 @@
+server:
+  port: 8080
+spring:
+  cloud:
+    nacos:
+      server-addr: 8.217.8.255:8848
+    gateway:
+      routes:  #路由规则
+        - id: user
+          uri: lb://routes-test
+          predicates:
+              - Path=/api/**
+          filters:
+            - RewritePath=/api/(?<test>.*),/test/$\{test}
+  application:
+    name: routes-test
