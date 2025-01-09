@@ -1,5 +1,8 @@
 server:
   port: 8080
+sa-token:
+  # jwt秘钥
+  jwt-secret-key: 碧蓝小新星(*^▽^*)
 spring:
   application:
     name: dingding-gateway

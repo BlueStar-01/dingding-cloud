@@ -1,30 +1,7 @@
 server:
   port: 8081
-spring:
-  datasource:
-    username: root
-    password: 123456
-    url: jdbc:mysql://localhost:3306/dingding
-    driver-class-name: com.mysql.cj.jdbc.Driver
-  application:
-    name: dingding-user
-  cloud:
-    nacos:
-      server-addr: 8.217.8.255:8848
-mybatis-plus:
-  configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-sa-token:
-  # jwt秘钥
-  jwt-secret-key: asdasdasifhueuiwyurfewbfjsdafjk
-jwt:
-  user-secret-kry: 20220813
-  user-t-tL: 7200000
-  user-token-name: token
-logging:
-  level:
-    com:
-      sky:
-        controller: info
-        mapper: debug
-        service: info
+dingding:
+  db:
+   host: localhost
+   username: root
+   password: 123456

@@ -32,6 +32,7 @@
         <mysql-connector-j.version>8.0.31</mysql-connector-j.version>
         <swagger-annotations.version>1.6.6</swagger-annotations.version>
         <jjwt.version>0.9.1</jjwt.version>
+        <sa-token.version>1.39.0</sa-token.version>
     </properties>
 
     <dependencies>

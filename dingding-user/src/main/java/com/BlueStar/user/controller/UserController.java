@@ -1,6 +1,8 @@
 package com.BlueStar.user.controller;
 
 
+import cn.dev33.satoken.stp.StpUtil;
+import cn.dev33.satoken.util.SaResult;
 import com.BlueStar.dingding.constant.MessageConstant;
 import com.BlueStar.dingding.context.BaseContext;
 import com.BlueStar.dingding.domain.Result;
@@ -31,6 +33,11 @@ public class UserController {
         User user = userService.getById(BaseContext.getCurrentId());
         user.setPassword(null);
         return Result.success(user);
+    }
+
+    @RequestMapping("/isLogin")
+    public Result isLogin() {
+        return Result.success("是否登录：" + StpUtil.isLogin());
     }
 
     /**
