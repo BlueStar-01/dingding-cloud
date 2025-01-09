@@ -1,6 +1,9 @@
 package com.BlueStar.user.service.impl;
 
 
+import cn.dev33.satoken.stp.SaLoginConfig;
+import cn.dev33.satoken.stp.SaTokenInfo;
+import cn.dev33.satoken.stp.StpUtil;
 import com.BlueStar.dingding.constant.JwtClaimsConstant;
 import com.BlueStar.dingding.constant.MessageConstant;
 import com.BlueStar.dingding.context.BaseContext;
@@ -43,8 +46,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
     private final UserMapper userMapper;
 
-    private final JwtTokenProperty jwtTokenProperty;
-
     /**
      * 用户名密码登录
      *
@@ -75,15 +76,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     }
 
     private UserLoginVO getUserLoginVO(User user) {
-        Map<String, Object> claims = new HashMap<>();
-        claims.put(JwtClaimsConstant.USER_ID, user.getId());
-        claims.put(JwtClaimsConstant.USERNAME, user.getUsername());
-        String token = JwtUtil.createJWT(jwtTokenProperty.getUserSecretKry(), jwtTokenProperty.getUserTTL(), claims);
-
+        StpUtil.login(user.getId(), SaLoginConfig
+                .setExtra("name", user.getUsername()));
+        SaTokenInfo tokenInfo = StpUtil.getTokenInfo();
         UserLoginVO loginVO = UserLoginVO.builder()
                 .userId(user.getId())
-                .token(token).build();
-
+                .token(tokenInfo.getTokenValue())
+                .build();
         return loginVO;
     }
 

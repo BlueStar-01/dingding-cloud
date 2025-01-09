@@ -18,20 +18,20 @@
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>com.BlueStar</groupId>
+            <artifactId>dingding-common</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
         <!--网关-->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-gateway</artifactId>
         </dependency>
-
         <!--负载均衡-->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-loadbalancer</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-autoconfigure</artifactId>
         </dependency>
         <!--nacos discovery-->
         <dependency>
