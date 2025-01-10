@@ -1,2 +1,3 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.BlueStar.dingding.config.MVCConfig
+  com.BlueStar.dingding.config.MVCConfig,\
+  com.BlueStar.dingding.config.MybatisConfig

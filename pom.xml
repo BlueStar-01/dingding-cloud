@@ -12,6 +12,8 @@
         <module>dingding-gateway</module>
         <module>dingding-user</module>
         <module>dingding-common</module>
+        <module>dingding-api</module>
+        <module>dingding-book</module>
     </modules>
 
     <parent>
