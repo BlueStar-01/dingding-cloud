@@ -31,6 +31,9 @@ public class UserController {
     public Result<User> info() {
         log.info("用户信息查询：{}", BaseContext.getCurrentId());
         User user = userService.getById(BaseContext.getCurrentId());
+        if (user == null) {
+            return Result.error(MessageConstant.ACCOUNT_NOT_FOUND);
+        }
         user.setPassword(null);
         return Result.success(user);
     }

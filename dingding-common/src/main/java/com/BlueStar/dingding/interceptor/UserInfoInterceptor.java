@@ -2,13 +2,11 @@ package com.BlueStar.dingding.interceptor;
 
 import cn.hutool.core.util.StrUtil;
 import com.BlueStar.dingding.context.BaseContext;
-import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@Component
 public class UserInfoInterceptor implements HandlerInterceptor {
 
     @Override
