@@ -35,7 +35,7 @@ public class UserController {
         return Result.success(user);
     }
 
-    @RequestMapping("/isLogin")
+    @RequestMapping(" ")
     public Result isLogin() {
         return Result.success("是否登录：" + StpUtil.isLogin());
     }

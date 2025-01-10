@@ -15,4 +15,8 @@ spring:
           uri: lb://dingding-user
           predicates:
             - Path=/user/**
-
+auth:
+  exclude-paths:
+    - /user/login
+    - /user/register
+    - /book/page

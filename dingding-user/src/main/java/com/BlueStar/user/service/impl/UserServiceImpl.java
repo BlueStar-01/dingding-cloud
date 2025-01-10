@@ -79,11 +79,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         StpUtil.login(user.getId(), SaLoginConfig
                 .setExtra("name", user.getUsername()));
         SaTokenInfo tokenInfo = StpUtil.getTokenInfo();
-        UserLoginVO loginVO = UserLoginVO.builder()
+        return UserLoginVO.builder()
                 .userId(user.getId())
                 .token(tokenInfo.getTokenValue())
                 .build();
-        return loginVO;
     }
 
     /**
