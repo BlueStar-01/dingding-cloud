@@ -57,7 +57,7 @@ public class AuthGlobalFilter implements GlobalFilter, Ordered {
         try {
             if (token != null && token.size() > 0) {
                 String tokenStr = token.get(0);
-                user = JwtUtil.parseJWT(SaTokenConfig, tokenStr);
+                user = JwtUtil.parseJWT(saTokenConfig.getJwtSecretKey(), tokenStr);
             }
         } catch (Exception e) {
             exchange.getResponse().setStatusCode(HttpStatus.FORBIDDEN);
