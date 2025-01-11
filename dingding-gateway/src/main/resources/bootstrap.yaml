@@ -9,3 +9,5 @@ spring:
         shared-configs: # 共享配置
           - dataId: shared-log.yaml # 共享日志配置
           - data-id: shared-satoken.yaml # 共享sa-token 配置
+          - data-id: shared-jwt.yaml # 共享jwt配置
+

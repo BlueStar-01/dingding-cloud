@@ -1,10 +1,10 @@
 package com.bluestar.gateway.filter;
 
-import cn.dev33.satoken.config.SaTokenConfig;
 import cn.hutool.core.text.AntPathMatcher;
 import com.BlueStar.dingding.constant.JwtClaimsConstant;
 import com.BlueStar.dingding.utils.JwtUtil;
 import com.bluestar.gateway.config.properties.AuthProperties;
+import com.bluestar.gateway.config.properties.JwtTokenProperty;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,7 +29,8 @@ public class AuthGlobalFilter implements GlobalFilter, Ordered {
 
     private final AntPathMatcher antPathMatcher = new AntPathMatcher();
 
-    private final SaTokenConfig saTokenConfig;
+    private final JwtTokenProperty jwtTokenProperty;
+
 
     private boolean isExclude(String antPath) {
         for (String pathPattern : authProperties.getExcludePaths()) {
@@ -55,9 +56,9 @@ public class AuthGlobalFilter implements GlobalFilter, Ordered {
         //解析token
         Claims user = null;
         try {
-            if (token != null && token.size() > 0) {
+            if (token != null && !token.isEmpty()) {
                 String tokenStr = token.get(0);
-                user = JwtUtil.parseJWT(saTokenConfig.getJwtSecretKey(), tokenStr);
+                user = JwtUtil.parseJWT(jwtTokenProperty.getUserSecretKry(), tokenStr);
             }
         } catch (Exception e) {
             exchange.getResponse().setStatusCode(HttpStatus.FORBIDDEN);

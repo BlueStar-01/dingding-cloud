@@ -45,6 +45,7 @@ import java.util.Map;
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IUserService {
 
     private final UserMapper userMapper;
+    private final JwtTokenProperty jwtTokenProperty;
 
     /**
      * 用户名密码登录
@@ -76,12 +77,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     }
 
     private UserLoginVO getUserLoginVO(User user) {
-        StpUtil.login(user.getId(), SaLoginConfig
-                .setExtra("name", user.getUsername()));
-        SaTokenInfo tokenInfo = StpUtil.getTokenInfo();
+        //todo
+        Map<String, Object> claims = new HashMap<>();
+        claims.put(JwtClaimsConstant.USER_ID, user.getId());
+        String jwt = JwtUtil.createJWT(jwtTokenProperty.getUserSecretKry(), jwtTokenProperty.getUserTTL(), claims);
         return UserLoginVO.builder()
                 .userId(user.getId())
-                .token(tokenInfo.getTokenValue())
+                .token(jwt)
                 .build();
     }
 
