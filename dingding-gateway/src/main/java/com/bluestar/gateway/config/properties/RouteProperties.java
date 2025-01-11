@@ -9,6 +9,6 @@ import org.springframework.stereotype.Component;
 @Data
 public class RouteProperties {
     // 路由配置文件的id和分组
-    private final String dataId;
-    private final String group;
+    private  String dataId;
+    private  String group;
 }
