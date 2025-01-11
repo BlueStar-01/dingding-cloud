@@ -1,4 +1,4 @@
-package com.bluestar.gateway.config;
+package com.bluestar.gateway.config.properties;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

@@ -29,33 +29,42 @@
             <artifactId>spring-cloud-starter-gateway</artifactId>
         </dependency>
         <!--负载均衡-->
+        <!--nacos discovery-->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-loadbalancer</artifactId>
         </dependency>
-        <!--nacos discovery-->
+        <!--nacos config-->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+        </dependency>
+        <!--加载bootstrap-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-bootstrap</artifactId>
+        </dependency>
+        <!-- Sa-Token 权限认证（Reactor响应式集成）, 在线文档：https://sa-token.cc -->
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
         </dependency>
-
-        <!-- Sa-Token 权限认证（Reactor响应式集成）, 在线文档：https://sa-token.cc -->
+        <!-- Sa-Token 整合 Redis （使用 jackson 序列化方式） -->
         <dependency>
             <groupId>cn.dev33</groupId>
             <artifactId>sa-token-reactor-spring-boot-starter</artifactId>
             <version>${sa-token.version}</version>
         </dependency>
-        <!-- Sa-Token 整合 Redis （使用 jackson 序列化方式） -->
         <dependency>
             <groupId>cn.dev33</groupId>
             <artifactId>sa-token-redis-jackson</artifactId>
             <version>${sa-token.version}</version>
         </dependency>
+        <!-- Sa-Token 整合 jwt -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-pool2</artifactId>
         </dependency>
-        <!-- Sa-Token 整合 jwt -->
         <dependency>
             <groupId>cn.dev33</groupId>
             <artifactId>sa-token-jwt</artifactId>
@@ -68,7 +77,6 @@
         </dependency>
 
     </dependencies>
-
 
 
 </project>

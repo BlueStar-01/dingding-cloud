@@ -4,7 +4,7 @@ import cn.dev33.satoken.config.SaTokenConfig;
 import cn.hutool.core.text.AntPathMatcher;
 import com.BlueStar.dingding.constant.JwtClaimsConstant;
 import com.BlueStar.dingding.utils.JwtUtil;
-import com.bluestar.gateway.config.AuthProperties;
+import com.bluestar.gateway.config.properties.AuthProperties;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

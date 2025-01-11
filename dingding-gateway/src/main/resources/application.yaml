@@ -15,8 +15,16 @@ spring:
           uri: lb://dingding-user
           predicates:
             - Path=/user/**
+        - id: book
+          uri: lb://dingding-book
+          predicates:
+            - Path=/book/**,/chapter/**
 auth:
   exclude-paths:
     - /user/login
     - /user/register
     - /book/page
+nacos:
+  routes:
+    data-id: gateway-routes.json
+    group: DEFAULT_GROUP

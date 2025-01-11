@@ -1,11 +1,11 @@
 spring:
   application:
-    name: dingding-book # 服务名称
+    name: dingding-gateway # 服务名称
   cloud:
     nacos:
       server-addr: 8.217.8.255 # nacos地址
       config:
         file-extension: yaml # 文件后缀名
         shared-configs: # 共享配置
-          - dataId: shared-jdbc.yaml # 共享mybatis配置
           - dataId: shared-log.yaml # 共享日志配置
+          - data-id: shared-satoken.yaml # 共享sa-token 配置
