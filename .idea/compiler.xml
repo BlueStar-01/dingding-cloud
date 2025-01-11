@@ -9,6 +9,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="dingding-user" />
         <module name="dingding-api" />
+        <module name="dingding-trade" />
         <module name="dingding-common" />
         <module name="dingding-gateway" />
         <module name="dingding-book" />
@@ -23,6 +24,7 @@
       <module name="dingding-cloud" options="-parameters" />
       <module name="dingding-common" options="-parameters" />
       <module name="dingding-gateway" options="-parameters" />
+      <module name="dingding-trade" options="-parameters" />
       <module name="dingding-user" options="-parameters" />
     </option>
   </component>

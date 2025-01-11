@@ -14,6 +14,7 @@
         <module>dingding-common</module>
         <module>dingding-api</module>
         <module>dingding-book</module>
+        <module>dingding-trade</module>
     </modules>
 
     <parent>

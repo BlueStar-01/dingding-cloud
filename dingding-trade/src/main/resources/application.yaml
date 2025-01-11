@@ -1,0 +1,7 @@
+server:
+  port: 8083
+dingding:
+  db:
+   host: localhost
+   username: root
+   password: 123456
