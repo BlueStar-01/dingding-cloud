@@ -19,6 +19,10 @@ spring:
           uri: lb://dingding-book
           predicates:
             - Path=/book/**,/chapter/**
+#        - id: trade
+#          uri: lb://dingding-trade
+#          predicates:
+#            - Path=/cart/**,/order/**
 auth:
   exclude-paths:
     - /user/login
