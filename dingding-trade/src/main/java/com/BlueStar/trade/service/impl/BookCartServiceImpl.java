@@ -1,7 +1,8 @@
 package com.BlueStar.trade.service.impl;
 
 
-
+import com.BlueStar.api.client.BookClient;
+import com.BlueStar.api.domain.dto.BookDto;
 import com.BlueStar.dingding.constant.MessageConstant;
 import com.BlueStar.dingding.context.BaseContext;
 import com.BlueStar.dingding.exception.BookNoFoundException;
@@ -14,7 +15,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 /**
@@ -30,16 +33,14 @@ import java.util.NoSuchElementException;
 @Slf4j
 public class BookCartServiceImpl extends ServiceImpl<BookCartMapper, BookCart> implements IBookCartService {
 
-    private final IBookService bookService;
+    private final BookClient bookService;
 
 
     @Override
     public void addBook(CartDto cartDto) {
         //檢查书籍是否存在
-        Long count = bookService.lambdaQuery()
-                .eq(Book::getId, cartDto.getBookId())
-                .count();
-        if (count <= 0) {
+        List<BookDto> list = bookService.getListByIds(List.of(cartDto.getBookId()));
+        if (!list.isEmpty()) {
             throw new BookNoFoundException(MessageConstant.BOOK_NOT_FOUND);
         }
         cartDto.setNumber(cartDto.getNumber() != null ? cartDto.getNumber() : 1);
@@ -49,7 +50,7 @@ public class BookCartServiceImpl extends ServiceImpl<BookCartMapper, BookCart> i
             cartCol = lambdaQuery()
                     .eq(BookCart::getBookId, cartDto.getBookId())
                     .eq(BookCart::getUserId, BaseContext.getCurrentId())
-                    .list().getFirst();
+                    .list().get(0);
         } catch (NoSuchElementException e) {
             log.error("查找数据为空");
         }

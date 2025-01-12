@@ -8,12 +8,14 @@ import com.BlueStar.book.service.IBookService;
 import com.BlueStar.dingding.constant.MessageConstant;
 import com.BlueStar.dingding.domain.Result;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -22,6 +24,25 @@ import java.util.List;
 @Slf4j
 public class BookController {
     private final IBookService bookService;
+
+    /**
+     * 根据ID批量获得书籍
+     *
+     * @param ids
+     * @return
+     */
+    @ApiOperation("根据ID批量获得书籍")
+    @GetMapping("/list")
+    public List<BookDto> getListByIds(@RequestParam List<Long> ids) {
+        List<Book> books = bookService.listByIds(ids);
+        List<BookDto> res = new ArrayList<>();
+        for (Book book : books) {
+            BookDto bookDto = new BookDto();
+            BeanUtils.copyProperties(book, bookDto);
+            res.add(bookDto);
+        }
+        return res;
+    }
 
     /**
      * 添加书籍

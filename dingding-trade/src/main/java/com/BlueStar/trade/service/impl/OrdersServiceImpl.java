@@ -1,9 +1,12 @@
 package com.BlueStar.trade.service.impl;
 
 
+import com.BlueStar.api.client.BookClient;
+import com.BlueStar.api.domain.dto.BookDto;
 import com.BlueStar.dingding.constant.MessageConstant;
 import com.BlueStar.dingding.constant.PayConstant;
 import com.BlueStar.dingding.context.BaseContext;
+import com.BlueStar.dingding.exception.AccountException;
 import com.BlueStar.dingding.exception.DataException;
 import com.BlueStar.trade.domain.po.BookCart;
 import com.BlueStar.trade.domain.po.OrderDetail;
@@ -17,11 +20,9 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.awt.print.Book;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -37,7 +38,7 @@ import java.util.stream.Collectors;
 public class OrdersServiceImpl extends ServiceImpl<OrdersMapper, Orders> implements IOrdersService {
 
     private final IBookCartService cartService;
-    private final IBookService bookService;
+    private final BookClient bookService;
     private final IOrderDetailService detailService;
 
 
@@ -56,7 +57,7 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersMapper, Orders> impleme
         if (carts.size() <= 0) {
             throw new DataException(MessageConstant.SHOPPING_CART_IS_NULL);
         }
-        cartService.removeBatchByIds(carts);
+        cartService.removeByIds(carts);
         //生成订单
         Orders orders = new Orders().setCreateTime(LocalDateTime.now())
                 .setUserId(BaseContext.getCurrentId())
@@ -95,13 +96,13 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersMapper, Orders> impleme
         //查询订单详情
         List<OrderDetail> details = detailService.lambdaQuery().eq(OrderDetail::getOrderId, orderId).list();
         //查询书籍信息
-        Set<Long> bookIds = details.stream().map(OrderDetail::getBookId).collect(Collectors.toSet());
-        List<Book> books = bookService.listByIds(bookIds);
+        List<Long> bookIds = details.stream().map(OrderDetail::getBookId).distinct().collect(Collectors.toList());
+        List<BookDto> books = bookService.getListByIds(bookIds);
 
         //构建订单信息
         List<OrderDetailVO> detailVOList = new ArrayList<>();
         for (int i = 0; i < details.size(); i++) {
-            Book book = books.get(i);
+            BookDto book = books.get(i);
             OrderDetail detail = details.get(i);
             OrderDetailVO vo = new OrderDetailVO();
             vo = vo.setBookName(book.getName())

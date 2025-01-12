@@ -1,6 +1,8 @@
 package com.BlueStar.trade.collection;
 
 
+import com.BlueStar.api.client.BookClient;
+import com.BlueStar.api.domain.dto.BookDto;
 import com.BlueStar.dingding.context.BaseContext;
 import com.BlueStar.dingding.domain.Result;
 import com.BlueStar.trade.domain.dto.CartDto;
@@ -11,10 +13,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
-import java.awt.print.Book;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 public class CartController {
     private final IBookCartService cartService;
 
-    private final IBookService bookService;
+    private final BookClient bookService;
 
     /**
      * 添加或减少书籍进购物车(number为负数就是减少,为null就设为默认1)
@@ -48,14 +48,19 @@ public class CartController {
     public Result<List<BookCartVO>> list() {
         //查询用户的购物车数据
         List<BookCart> carts = cartService.lambdaQuery().eq(BookCart::getUserId, BaseContext.getCurrentId()).list();
-        Set<Long> ids = carts.stream().map(BookCart::getBookId).collect(Collectors.toSet());
+        List<Long> ids = carts.stream().map(BookCart::getBookId).distinct().collect(Collectors.toList());
+        List<BookCartVO> ret = getBookCartVOS(ids, carts);
+        return Result.success(ret);
+    }
+
+    private List<BookCartVO> getBookCartVOS(List<Long> ids, List<BookCart> carts) {
         //查询对应的书籍信息
-        List<Book> books = bookService.listByIds(ids);
+        List<BookDto> books = bookService.getListByIds(ids);
         List<BookCartVO> ret = new ArrayList<>();
         for (int i = 0; i < carts.size(); i++) {
             //添加信息
             BookCart bookCart = carts.get(i);
-            Book book = books.get(i);
+            BookDto book = books.get(i);
             BookCartVO vo = BookCartVO.builder()
                     .bookName(book.getName())
                     .coverImg(book.getCoverImg())
@@ -65,6 +70,6 @@ public class CartController {
                     .build();
             ret.add(vo);
         }
-        return Result.success(ret);
+        return ret;
     }
 }
