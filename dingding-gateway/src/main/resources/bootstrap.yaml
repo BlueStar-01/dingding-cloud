@@ -5,6 +5,7 @@ spring:
     nacos:
       server-addr: 8.217.8.255 # nacos地址
       config:
+        timeout: 6000
         file-extension: yaml # 文件后缀名
         shared-configs: # 共享配置
           - dataId: shared-log.yaml # 共享日志配置
