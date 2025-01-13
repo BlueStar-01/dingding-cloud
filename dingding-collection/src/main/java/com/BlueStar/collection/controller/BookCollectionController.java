@@ -1,5 +1,8 @@
 package com.BlueStar.collection.controller;
 
+import com.BlueStar.api.client.BookClient;
+import com.BlueStar.api.domain.dto.BookDto;
+import com.BlueStar.api.domain.po.Book;
 import com.BlueStar.collection.domain.dto.BookCollectionDto;
 import com.BlueStar.collection.domain.po.BookCollection;
 import com.BlueStar.collection.domain.po.Collection;
@@ -10,7 +13,6 @@ import com.BlueStar.dingding.constant.MessageConstant;
 import com.BlueStar.dingding.context.BaseContext;
 import com.BlueStar.dingding.domain.Result;
 import com.BlueStar.dingding.exception.DataException;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -32,7 +34,7 @@ public class BookCollectionController {
     private static final Logger log = LoggerFactory.getLogger(BookCollectionController.class);
     private final IBookCollectionService bookCollectionService;
 
-    private final IBookService bookService;
+    private final BookClient bookService;
 
     private final ICollectionService collectionService;
 
@@ -43,10 +45,8 @@ public class BookCollectionController {
      */
     //todo 简易版本 找出评分最高的10本书籍
     @GetMapping("/recommendedBooks")
-    public Result<List<Book>> recommendedBooks() {
-        List<Book> books = bookService.lambdaQuery()
-                .orderByDesc(Book::getRating)
-                .page(Page.of(1, 10)).getRecords();
+    public Result<List<BookDto>> recommendedBooks() {
+        List<BookDto> books = bookService.recommendedBooks();
         return Result.success("简易版本 找出评分最高的10本书籍", books);
     }
 
@@ -57,7 +57,7 @@ public class BookCollectionController {
      * @return
      */
     @GetMapping("/list")
-    public Result<List<Book>> getList(@RequestParam Long collectionId) {
+    public Result<List<BookDto>> getList(@RequestParam Long collectionId) {
         //检查ID问题
         collectionId = checkOrCreatDeflateCollection(collectionId);
         //查询所有的数据
@@ -71,7 +71,7 @@ public class BookCollectionController {
         if (bookIds.isEmpty()) {
             return Result.success(MessageConstant.COL_NOT_FOUND, null);
         }
-        List<Book> books = bookService.listByIds(bookIds);
+        List<BookDto> books = bookService.getListByIds(bookIds);
         return Result.success(books);
     }
 
@@ -87,7 +87,7 @@ public class BookCollectionController {
         if (byId == null || !Objects.equals(byId.getUserId(), BaseContext.getCurrentId())) {
             Collection collection = null;
             try {
-                collection = collectionService.lambdaQuery().eq(Collection::getUserId, BaseContext.getCurrentId()).list().getFirst();
+                collection = collectionService.lambdaQuery().eq(Collection::getUserId, BaseContext.getCurrentId()).list().get(0);
                 collectionId = collection.getId();
             } catch (NoSuchElementException e) {
                 e.printStackTrace();
@@ -123,17 +123,17 @@ public class BookCollectionController {
         BookCollection controller = new BookCollection();
         BeanUtils.copyProperties(bookCollectionDto, controller);
         //检查书籍和收藏夹是否存在
-        Long bookCount = bookService.lambdaQuery().eq(Book::getId, bookCollectionDto.getBookId()).count();
-        Long collectionCount = collectionService.lambdaQuery().eq(Collection::getId, bookCollectionDto.getCollectionId()).count();
+        List<BookDto> bookCount = bookService.getListByIds(List.of(bookCollectionDto.getBookId()));
+        Long collectionCount = Long.valueOf(collectionService.lambdaQuery().eq(Collection::getId, bookCollectionDto.getCollectionId()).count());
         //添加进数据库
-        if (bookCount <= 0 || collectionCount <= 0) {
+        if (bookCount.isEmpty() || collectionCount <= 0) {
             return Result.error(MessageConstant.BOOK_OR_COLLECTION_NOT_FOUND);
         }
         //检查是否重复添加
-        Long cowCount = bookCollectionService.lambdaQuery()
+        Long cowCount = Long.valueOf(bookCollectionService.lambdaQuery()
                 .eq(BookCollection::getBookId, bookCollectionDto.getBookId())
                 .eq(BookCollection::getCollectionId, bookCollectionDto.getCollectionId())
-                .count();
+                .count());
         if (cowCount != 0) {
             return Result.error(MessageConstant.COL_ALREADY_EXISTS);
         }
@@ -147,7 +147,7 @@ public class BookCollectionController {
      * @param bookCollectionDto
      * @return
      */
-    @Transactional
+   // @Transactional
     @DeleteMapping("/del")
     public Result delBookCollection(@RequestBody BookCollectionDto bookCollectionDto) {
         //检查收藏夹问题

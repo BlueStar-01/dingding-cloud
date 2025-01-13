@@ -25,6 +25,19 @@ import java.util.List;
 public class BookController {
     private final IBookService bookService;
 
+    @ApiOperation("查找评分最高啊的10书籍")
+    @GetMapping("/book/recommet")
+    List<BookDto> recommendedBooks() {
+        Page<Book> page = bookService.page(Page.of(1, 10));
+        List<BookDto> bookDtos = new ArrayList<>();
+        for (Book book : page.getRecords()) {
+            BookDto bookDto = new BookDto();
+            BeanUtils.copyProperties(book, bookDto);
+            bookDtos.add(bookDto);
+        }
+        return bookDtos;
+    }
+
     /**
      * 根据ID批量获得书籍
      *

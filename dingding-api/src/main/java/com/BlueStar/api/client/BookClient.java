@@ -13,4 +13,8 @@ public interface BookClient {
     @ApiOperation("根据id批量查询书籍")
     @GetMapping("/book/list")
      List<BookDto> getListByIds(@RequestParam List<Long> ids);
+
+    @ApiOperation("查找评分最高啊的10书籍")
+    @GetMapping("/book/recommet")
+    List<BookDto> recommendedBooks();
 }
