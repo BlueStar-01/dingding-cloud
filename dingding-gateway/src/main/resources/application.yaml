@@ -23,6 +23,7 @@ spring:
 #          uri: lb://dingding-trade
 #          predicates:
 #            - Path=/cart/**,/order/**
+
 auth:
   exclude-paths:
     - /user/login

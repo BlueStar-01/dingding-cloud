@@ -43,6 +43,7 @@ public class DynamicRouteLoader {
 
                     @Override
                     public void receiveConfigInfo(String configInfo) {
+                        log.info("检查到路由配置更新 : {}", configInfo);
                         updateConfigInfo(configInfo);
                     }
                 });

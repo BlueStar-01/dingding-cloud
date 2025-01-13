@@ -1,6 +1,6 @@
 spring:
   application:
-    name: dingding-trade # 服务名称
+    name: dingding-collection # 服务名称
   cloud:
     nacos:
       server-addr: 8.217.8.255 # nacos地址
