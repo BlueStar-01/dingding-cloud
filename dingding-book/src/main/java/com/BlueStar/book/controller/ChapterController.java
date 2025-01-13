@@ -1,4 +1,4 @@
-package com.BlueStar.book.collection;
+package com.BlueStar.book.controller;
 
 
 import com.BlueStar.book.domain.dto.ChapterDto;

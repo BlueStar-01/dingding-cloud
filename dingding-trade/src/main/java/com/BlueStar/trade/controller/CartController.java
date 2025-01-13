@@ -1,4 +1,4 @@
-package com.BlueStar.trade.collection;
+package com.BlueStar.trade.controller;
 
 
 import com.BlueStar.api.client.BookClient;

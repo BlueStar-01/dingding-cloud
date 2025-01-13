@@ -11,6 +11,6 @@ import java.util.List;
 @FeignClient(value = "dingding-book")
 public interface BookClient {
     @ApiOperation("根据id批量查询书籍")
-    @GetMapping("/list")
+    @GetMapping("/book/list")
      List<BookDto> getListByIds(@RequestParam List<Long> ids);
 }

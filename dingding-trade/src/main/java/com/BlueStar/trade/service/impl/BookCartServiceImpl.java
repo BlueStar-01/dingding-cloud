@@ -40,7 +40,7 @@ public class BookCartServiceImpl extends ServiceImpl<BookCartMapper, BookCart> i
     public void addBook(CartDto cartDto) {
         //檢查书籍是否存在
         List<BookDto> list = bookService.getListByIds(List.of(cartDto.getBookId()));
-        if (!list.isEmpty()) {
+        if (list.isEmpty()) {
             throw new BookNoFoundException(MessageConstant.BOOK_NOT_FOUND);
         }
         cartDto.setNumber(cartDto.getNumber() != null ? cartDto.getNumber() : 1);

@@ -1,4 +1,4 @@
-package com.BlueStar.book.collection;
+package com.BlueStar.book.controller;
 
 
 import com.BlueStar.book.domain.dto.BookDto;
@@ -34,6 +34,9 @@ public class BookController {
     @ApiOperation("根据ID批量获得书籍")
     @GetMapping("/list")
     public List<BookDto> getListByIds(@RequestParam List<Long> ids) {
+        if (ids == null || ids.isEmpty()) {
+            return null;
+        }
         List<Book> books = bookService.listByIds(ids);
         List<BookDto> res = new ArrayList<>();
         for (Book book : books) {
