@@ -84,20 +84,19 @@ public class BookServiceImpl extends ServiceImpl<BookMapper, Book> implements IB
                 .lt(bookPageDto.getMaxPrice() != null, Book::getPrice, bookPageDto.getMaxPrice())
                 //排序
                 .page(bookPageDto.toMpPageDefaultSortByCreateTimeDesc());
-        if (page.getTotal() <= 20) {
-            //太少就添加一些数据
-            List<Book> list = this.page(Page.of(1, 20)).getRecords();
-            List<Book> books = page.getRecords();
-            if (books != null && !books.isEmpty()) {
-                books.addAll(list);
-                //去重
-                books = books.stream().distinct().collect(Collectors.toList());
-            } else {
-                books = list;
-            }
-            page.setRecords(books);
-            page.setTotal(page.getRecords().size());
-        }
+//        if (page.getTotal() <= 20) {
+//            //太少就添加一些数据
+//            List<Book> list = this.page(Page.of(1, 20)).getRecords();
+//            List<Book> books = page.getRecords();
+//            if (books != null && !books.isEmpty()) {
+//                books.addAll(list);
+//                //去重
+//                books = books.stream().distinct().collect(Collectors.toList());
+//            } else {
+//                books = list;
+//            }
+//            page.setRecords(books);
+//        }
         return page;
 
     }

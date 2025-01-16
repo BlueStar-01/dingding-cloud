@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @RestController
@@ -147,7 +148,7 @@ public class BookCollectionController {
      * @param bookCollectionDto
      * @return
      */
-   // @Transactional
+    // @Transactional
     @DeleteMapping("/del")
     public Result delBookCollection(@RequestBody BookCollectionDto bookCollectionDto) {
         //检查收藏夹问题
@@ -159,7 +160,7 @@ public class BookCollectionController {
                 .eq(BookCollection::getBookId, bookCollectionDto.getBookId())
                 .list();
         log.info("删除实体:{}", list);
-        bookCollectionService.removeByIds(list);
+        bookCollectionService.removeByIds(list.stream().map(BookCollection::getId).collect(Collectors.toList()));
         return Result.success();
     }
 

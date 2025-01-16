@@ -15,9 +15,10 @@ public class MessageConstant {
     public static final String ACCOUNT_EXPIRED_EXISTS = "账号已过期";
     public static final String UPDATE_FAILED = "更新失败";
     public static final String COL_ALREADY_EXISTS = "记录已存在";
+    public static final String DATA_ANOMALIES = "数据异常";
 
     public static final String ACCOUNT_LOCKED = "账号被锁定";
-    public static final String CREATE_DEFAULT_COLLECTION_FAILED= "创建默认收藏夹失败";
+    public static final String CREATE_DEFAULT_COLLECTION_FAILED = "创建默认收藏夹失败";
     public static final String UNKNOWN_ERROR = "未知错误";
     public static final String USER_NOT_LOGIN = "用户未登录";
     public static final String REQUEST_PARAMETERS_ARE_MISSING = "请求参数缺失";

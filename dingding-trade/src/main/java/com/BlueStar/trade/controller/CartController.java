@@ -9,6 +9,7 @@ import com.BlueStar.trade.domain.dto.CartDto;
 import com.BlueStar.trade.domain.po.BookCart;
 import com.BlueStar.trade.domain.vo.BookCartVO;
 import com.BlueStar.trade.service.IBookCartService;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -35,6 +36,13 @@ public class CartController {
     @PutMapping("/add")
     public Result addBook(@RequestBody CartDto cartDto) {
         cartService.addBook(cartDto);
+        return Result.success();
+    }
+
+    @DeleteMapping("/clear")
+    public Result delAll() {
+        //獲得当前用户的所有的购物车数据
+        cartService.remove(new LambdaQueryWrapper<BookCart>().eq(BookCart::getUserId, BaseContext.getCurrentId()));
         return Result.success();
     }
 

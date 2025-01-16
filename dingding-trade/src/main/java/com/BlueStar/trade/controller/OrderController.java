@@ -28,7 +28,9 @@ public class OrderController {
      */
     @GetMapping("/list")
     public Result<List<Orders>> list() {
-        List<Orders> orders = ordersService.lambdaQuery().eq(Orders::getUserId, BaseContext.getCurrentId()).list();
+        List<Orders> orders = ordersService.lambdaQuery()
+                .eq(Orders::getUserId, BaseContext.getCurrentId())
+                .orderByDesc(Orders::getCreateTime).list();
         if (orders == null || orders.isEmpty()) {
             return Result.success(MessageConstant.COL_NOT_FOUND, null);
         }

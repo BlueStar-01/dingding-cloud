@@ -19,6 +19,7 @@ import com.BlueStar.trade.service.IOrdersService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -48,7 +49,7 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersMapper, Orders> impleme
      * @return
      */
     @Override
-//    @Transactional //todo 分布式事务待实现
+    @Transactional //todo 分布式事务待实现
     public Orders cleanCart() {
         //查询购物车数据
         List<BookCart> carts = cartService.lambdaQuery().eq(BookCart::getUserId, BaseContext.getCurrentId())
@@ -57,7 +58,7 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersMapper, Orders> impleme
         if (carts.size() <= 0) {
             throw new DataException(MessageConstant.SHOPPING_CART_IS_NULL);
         }
-        cartService.removeByIds(carts);
+        cartService.removeByIds(carts.stream().map(BookCart::getId).collect(Collectors.toList()));
         //生成订单
         Orders orders = new Orders().setCreateTime(LocalDateTime.now())
                 .setUserId(BaseContext.getCurrentId())
@@ -97,8 +98,10 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersMapper, Orders> impleme
         List<OrderDetail> details = detailService.lambdaQuery().eq(OrderDetail::getOrderId, orderId).list();
         //查询书籍信息
         List<Long> bookIds = details.stream().map(OrderDetail::getBookId).distinct().collect(Collectors.toList());
+        if (bookIds.size() != details.size()) {
+            throw new DataException(MessageConstant.DATA_ANOMALIES);
+        }
         List<BookDto> books = bookService.getListByIds(bookIds);
-
         //构建订单信息
         List<OrderDetailVO> detailVOList = new ArrayList<>();
         for (int i = 0; i < details.size(); i++) {

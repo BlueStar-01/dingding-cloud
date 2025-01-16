@@ -51,7 +51,7 @@ public class BookCartServiceImpl extends ServiceImpl<BookCartMapper, BookCart> i
                     .eq(BookCart::getBookId, cartDto.getBookId())
                     .eq(BookCart::getUserId, BaseContext.getCurrentId())
                     .list().get(0);
-        } catch (NoSuchElementException e) {
+        } catch (IndexOutOfBoundsException e) {
             log.error("查找数据为空");
         }
         //如果已经有了就更新数量

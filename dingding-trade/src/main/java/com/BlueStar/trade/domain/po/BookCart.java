@@ -28,8 +28,6 @@ import java.time.LocalDateTime;
 @ApiModel(value = "BookCart对象", description = "购物内容表")
 public class BookCart implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-
     @ApiModelProperty(value = "购物车记录ID")
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;

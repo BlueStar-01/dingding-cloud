@@ -10,6 +10,19 @@ spring:
     nacos:
       server-addr: 8.217.8.255:8848
     gateway:
+      globalcors:
+        cors-configurations:
+          '[/**]': # 通配符路径
+            allowedOrigins: "http://localhost:8081"
+            allowedMethods: # 允许的所有HTTP方法
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+            allowedHeaders: "*" # 允许的所有头部
+            allowCredentials: true # 是否允许携带凭证
+            maxAge: 3600 # 最大缓存时间（秒）
       routes: #路由规则
         - id: user
           uri: lb://dingding-user
